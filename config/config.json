@@ -1,0 +1,35 @@
+{
+    "database": {
+        "host": "localhost",
+        "port": 3306,
+        "user": "root",
+        "password": "",
+        "database": "mytube",
+        "DB_PROTOCOL":"tcp",
+        "DB_ADDRESS":"localhost:3306",
+        "DB_CHARSET":"utf8mb4",
+        "DB_PARSETIME":"True",
+        "DB_LOC":"Local"
+    },
+    "livedatabase": {
+        "host": "localhost",
+        "port": 3306,
+        "user": "root",
+        "password": "",
+        "database": "mytube",
+        "migrate": "FALSE"
+    },
+    "port": 8040,
+    "livePort": 8050,
+    "migrate":"FALSE",
+    "authSecret": "XH1PjO/FqD3jx/4LUpI4Dqj7IbfLqN5DV9pWaYYvSnw=",
+    "smtpOptions": {
+        "host": "cp.systems.chamasoft.com",
+        "port": 587,
+        "auth": {
+            "user": "info@petropal.sandbox.co.ke",
+            "pass": "u0Xnpmb0"
+        }
+    },
+    "uploadsMask":"u0veDcqIsErQVKXuXeM3"
+}
