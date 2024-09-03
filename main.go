@@ -12,13 +12,12 @@ import (
 
 	"my_tube_backend/routes"
 	"my_tube_backend/models"
-	"my_tube_backend/controllers" // Import the controllers package
+	"my_tube_backend/controllers"
 )
 
 func main() {
 	// Load environment variables from .env file
-	err := godotenv.Load()
-	if err != nil {
+	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
@@ -41,8 +40,7 @@ func main() {
 	}
 
 	// AutoMigrate the models
-	err = db.AutoMigrate(&models.User{})
-	if err != nil {
+	if err := db.AutoMigrate(&models.User{}, &models.Profile{}, &models.Video{}, &models.Comment{}, &models.Subscriber{}); err != nil {
 		log.Fatal("Error migrating database: ", err)
 	}
 
@@ -55,6 +53,9 @@ func main() {
 		c.Next()
 	})
 
+	// Assign DB instance to the controllers package
+	controllers.DB = db
+
 	// Setup routes for authentication and user management
 	routes.AuthRoutes(r, db)
 
@@ -62,8 +63,14 @@ func main() {
 	r.POST("/upload", controllers.UploadFileController)
 	r.POST("/resize", controllers.ResizeImageController)
 
+	// Setup routes for video management
+	routes.RegisterVideoRoutes(r)
+
+	// Setup additional routes
+	routes.SetupRoutes(db, r)
+
 	// Run the server
-	if err := r.Run(); err != nil {
+	if err := r.Run(":8080"); err != nil {
 		log.Fatal("Error starting server: ", err)
 	}
 }
