@@ -12,7 +12,8 @@ import (
 
 	"my_tube_backend/routes"
 	"my_tube_backend/models"
-	"my_tube_backend/controllers"
+	"my_tube_backend/controllers" 
+	"my_tube_backend/services"    // Import your M-Pesa services
 )
 
 func main() {
@@ -56,6 +57,15 @@ func main() {
 	// Assign DB instance to the controllers package
 	controllers.DB = db
 
+	// Initialize M-Pesa Service
+	mpesaService, err := services.NewMpesaService()
+	if err != nil {
+		log.Fatal("Error initializing Mpesa Service: ", err)
+	}
+
+	// Initialize M-Pesa Controller
+	mpesaController := controllers.NewMpesaController(mpesaService)
+
 	// Setup routes for authentication and user management
 	routes.AuthRoutes(r, db)
 
@@ -68,6 +78,9 @@ func main() {
 
 	// Setup additional routes
 	routes.SetupRoutes(db, r)
+
+	// Setup M-Pesa routes
+	routes.MpesaRoutes(r, mpesaController)
 
 	// Run the server
 	if err := r.Run(":8080"); err != nil {
